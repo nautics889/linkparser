@@ -21,10 +21,11 @@ class NewHTMLParser(HTMLParser):
             # находим аттрибут адреса ссылки
             for attr in attrs:
                 if attr[0] == 'href':
-                    # проверяем эту ссылку методом validate() (мы его еще напишем)
+                    # проверяем эту ссылку методом validate()
                     if not self.validate(attr[0]):
-                        # вставляем адрес в список ссылок
-                        self.links.append(attr[1])
+                    	if self.validate_link(attr[1]):
+                        	# вставляем адрес в список ссылок
+                        	self.links.append(attr[1])
 
     def validate(self, link):
         """ Функция проверяет стоит ли добавлять ссылку в список адресов.
@@ -45,6 +46,13 @@ class NewHTMLParser(HTMLParser):
         f.write('\n'.join(sorted(self.links)))
         # закрываем файл
         f.close()
+
+    def validate_link(self, link):
+    	if link[:4]=='http':
+    		return True
+
+    def __del__(self):
+        pass
 
 def handler():
     link = str(entrylink.get())
